@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 DATA_PATH = 'datasets/Data.csv'
 
 def data_processing():
-	# Read input dataset and print the resulting dataframe 
+	# Read input dataset
 	df = pd.read_csv(DATA_PATH)
 	'''
 	   Country   Age   Salary Purchased
@@ -27,8 +27,8 @@ def data_processing():
 	# Y: values f(X), the last column
 	# Use iloc[rows,cols] to select a subset of data in the dataframe
 	# .values convert the dataframe into numpy.ndarray
-	X = df.iloc[:, :-1].values
-	Y = df.iloc[:, -1].values
+	X = df.iloc[:, :-1].values 	# iloc[:, :-1] select all columns excluding last one  
+	Y = df.iloc[:, -1].values 	# iloc[:, -1]  select last column
 	'''
 	X = 
 	[['France' 44.0 72000.0]
@@ -107,7 +107,7 @@ def data_processing():
 	'''
 
 	# Splits the datasets into training sets and test sets
-	X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+	X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, random_state=0)
 	'''
 	X_train = 
 	[[0.00000000e+00 1.00000000e+00 0.00000000e+00 4.00000000e+01 6.37777778e+04]
