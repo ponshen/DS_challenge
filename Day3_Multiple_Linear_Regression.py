@@ -88,14 +88,26 @@ def multi_regression():
     
     
     # Fitting Multiple Linear Regression to the Training set
-    regressor = LinearRegression()
+    # normalize=True: feature normalization of X before regression
+    regressor = LinearRegression(normalize=True)
     regressor.fit(X_train, Y_train)
-    
+    train_score = regressor.score(X_train, Y_train)
+    print("Result of linear regression on train set...")
+    df_train_y = pd.DataFrame(data={'Fitted y': np.around(regressor.predict(X_train)), 'Real y': np.around(Y_train)})
+    print(df_train_y)
+    print("train score: {:.2f}".format(train_score))
+    print()
+
     
     # Predicting the Test set results
     y_pred = regressor.predict(X_test)
-    print(y_pred)
-    print(Y_test)
+    test_score = regressor.score(X_test, Y_test)
+    print("Predicting y on test set...")
+    df_test_y = pd.DataFrame(data={'Pred. y': np.around(y_pred), 'Real y': np.around(Y_test)})
+    print(df_test_y)
+    print("test score: {:.2f}".format(test_score))
+
+
     
     
 multi_regression()
