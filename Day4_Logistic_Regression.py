@@ -117,6 +117,16 @@ def logistic_regression():
     
     # Visualization
     # TODO
+
+    X_true = X[np.where(Y==1)]
+    X_false = X[np.where(Y==0)]
+    print(X_true)
+    print(X_false)
+    
+    plt.scatter(X_true[:, 0], X_true[:, 1], c="b")
+    plt.scatter(X_false[:, 0], X_false[:, 1], c="r")
+    plt.show()
+
     
     
 
