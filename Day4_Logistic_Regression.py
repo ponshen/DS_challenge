@@ -94,7 +94,7 @@ def logistic_regression():
     y_correct_train = (Y_train==y_fitted)
     
     df_y_train = pd.DataFrame(data={'Y_train': Y_train, 'Y_fitted': y_fitted})
-    print(df_y_train)
+    #print(df_y_train)
     print("Fitted correctly: {:d}  Total: {:d}".format(np.sum(y_correct_train), y_correct_train.size))
     print("Fitting Accuracy: {:.1f} %".format(classifier.score(X_train, Y_train) * 100))
     
@@ -103,7 +103,7 @@ def logistic_regression():
     y_correct_test = (Y_test==y_pred)
     
     df_y_test = pd.DataFrame(data={'Y_test': Y_test, 'Y_pred': y_pred})
-    print(df_y_test)
+    #print(df_y_test)
     print("Predicted correctly: {:d}  Total: {:d}".format(np.sum(y_correct_test), y_correct_test.size))
     print("Prediction Accuracy: {:.1f} %".format(classifier.score(X_test, Y_test) * 100))
     
@@ -117,14 +117,14 @@ def logistic_regression():
     
     # Visualization
     # TODO
-
-    X_true = X[np.where(Y==1)]
-    X_false = X[np.where(Y==0)]
-    print(X_true)
-    print(X_false)
-    
+    X_test = sc.inverse_transform(X_test)
+    X_true = X_test[np.where(Y_test==1)]
+    X_false = X_test[np.where(Y_test==0)]
+ 
     plt.scatter(X_true[:, 0], X_true[:, 1], c="b")
     plt.scatter(X_false[:, 0], X_false[:, 1], c="r")
+    plt.xlabel('Age')
+    plt.ylabel('Estimated Salary')
     plt.show()
 
     
