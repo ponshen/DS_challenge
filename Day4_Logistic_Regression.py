@@ -84,28 +84,30 @@ def logistic_regression():
     
     # Feature Scaling
     sc = StandardScaler()
-    X_train = sc.fit_transform(X_train.astype(float))
-    X_test = sc.fit_transform(X_test.astype(float))
+    X_train_norm = sc.fit_transform(X_train.astype(float))
+    X_test_norm = sc.transform(X_test.astype(float))
     
     # Fitting Logistic Regression to the Training set
     classifier = LogisticRegression()
-    classifier.fit(X_train, Y_train)
-    y_fitted = classifier.predict(X_train)
-    y_correct_train = (Y_train==y_fitted)
-    
-    df_y_train = pd.DataFrame(data={'Y_train': Y_train, 'Y_fitted': y_fitted})
+    classifier.fit(X_train_norm, Y_train)
+    y_fitted = classifier.predict(X_train_norm)
+    y_correct_train = (Y_train==y_fitted)   # True/False list
+    #print(y_correct_train)
+
+    #df_y_train = pd.DataFrame(data={'Y_train': Y_train, 'Y_fitted': y_fitted})
     #print(df_y_train)
     print("Fitted correctly: {:d}  Total: {:d}".format(np.sum(y_correct_train), y_correct_train.size))
-    print("Fitting Accuracy: {:.1f} %".format(classifier.score(X_train, Y_train) * 100))
+    print("Fitting Accuracy: {:.1f} %".format(classifier.score(X_train_norm, Y_train) * 100))
     
     # Predicting Test set results
-    y_pred = classifier.predict(X_test)
-    y_correct_test = (Y_test==y_pred)
-    
-    df_y_test = pd.DataFrame(data={'Y_test': Y_test, 'Y_pred': y_pred})
+    y_pred = classifier.predict(X_test_norm)
+    y_correct_test = (Y_test==y_pred)   # True False list
+    #print(y_correct_test)
+
+    #df_y_test = pd.DataFrame(data={'Y_test': Y_test, 'Y_pred': y_pred})
     #print(df_y_test)
     print("Predicted correctly: {:d}  Total: {:d}".format(np.sum(y_correct_test), y_correct_test.size))
-    print("Prediction Accuracy: {:.1f} %".format(classifier.score(X_test, Y_test) * 100))
+    print("Prediction Accuracy: {:.1f} %".format(classifier.score(X_test_norm, Y_test) * 100))
     
     cm = confusion_matrix(Y_test, y_pred)
     print()
@@ -114,20 +116,23 @@ def logistic_regression():
     print()
     print("Confusion matrix:")
     print(cm)
+    print()
     
     # Visualization
-    # TODO
-    X_test = sc.inverse_transform(X_test)
+    # Age feature within [18, 60], Estimated Salary feature within [15000, 150000]
+    # Plot the decision boundary where probability of y is 0.5
     X_true = X_test[np.where(Y_test==1)]
     X_false = X_test[np.where(Y_test==0)]
- 
+    xx, yy = np.mgrid[15:65:.1, 10000:160000:100]
+    grid = np.column_stack((xx.ravel(), yy.ravel()))
+    probs = classifier.predict_proba(sc.transform(grid))[:,1].reshape(xx.shape)
+    
+    plt.contour(xx, yy, probs, [.5], cmap="Greys", vmin=0, vmax=.6)
     plt.scatter(X_true[:, 0], X_true[:, 1], c="b")
     plt.scatter(X_false[:, 0], X_false[:, 1], c="r")
     plt.xlabel('Age')
     plt.ylabel('Estimated Salary')
     plt.show()
 
-    
-    
 
 logistic_regression()
